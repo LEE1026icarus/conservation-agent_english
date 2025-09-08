@@ -1,2 +1,2 @@
 # conservation-agent_english
-Flask 기반 데모입니다. app.py는 정적/템플릿 서빙, Talisman CSP, 레이트 리밋, 헬스체크로 D-ID Agent 임베드를 안전하게 노출합니다. index.html은 위젯 타깃 영역과 최소 UI를, styles.css는 기본 스타일을 정의합니다. app.js는 오디오 자동재생 언락, 마이크 권한·테스트, 에이전트 초기화/메시지 전송을 담당합니다. Render 배포는 gunicorn+Redis 설정 포함, 기본은 client key 임베드(토큰 모드 선택).
+이 서비스는 D-ID Agent를 웹에 임베딩하여 사용자가 직접 AI 아바타와 음성으로 대화할 수 있게 해주는 플랫폼입니다. Flask 서버가 안전한 환경에서 정적 페이지를 제공하고, 브라우저에서 에이전트 SDK를 불러와 마이크 권한·오디오 연결을 처리합니다. Render 배포를 통해 별도 서버 설정 없이도 누구나 접근 가능한 실시간 대화형 웹 서비스를 제공합니다.
