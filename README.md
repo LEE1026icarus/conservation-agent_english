@@ -19,20 +19,17 @@ Flask 서버가 정적 페이지를 안전하게 제공하고, 프론트엔드�
 ---
 
 ## 📂 프로젝트 구조
-```
 
 project/
-├─ app.py              # Flask 서버 (CSP, 라우팅, 헬스체크)
-├─ requirements.txt    # Python 의존성 패키지
-├─ Procfile            # Render/Gunicorn 실행 설정
+├─ app.py # Flask 서버 (CSP, 라우팅, 헬스체크)
+├─ requirements.txt # Python 의존성 패키지
+├─ Procfile # Render/Gunicorn 실행 설정
 ├─ static/
-│   ├─ styles.css
-│   ├─ app.js
-│   └─ favicon.ico
+│ ├─ styles.css
+│ ├─ app.js
+│ └─ favicon.ico
 └─ templates/
 └─ index.html
-
-````
 
 ---
 
@@ -83,8 +80,6 @@ gunicorn -w 2 -k gthread -t 60 -b 0.0.0.0:5000 app:app
 ## 📜 라이선스
 
 이 프로젝트는 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)에 따라 배포됩니다.
-
-```
 
 ---
 
