@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: did-flask-render
+    name: English-conversation-agent
     env: python
     plan: free
     region: oregon
@@ -41,3 +41,4 @@ services:
     name: did-redis
     plan: free
     ipAllowList: []   # anywhere
+
