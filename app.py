@@ -99,6 +99,8 @@ def healthz():
     return "ok", 200
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))
-    print(f"Starting server on port {port}...")
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = int(os.environ.get("PORT", 5000))   # 로컬에서는 5000, Render에서는 자동 할당
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"  # 프로덕션에서 debug 꺼두기
+    print(f"Starting server on port {port} (debug={debug})")
+    app.run(host="0.0.0.0", port=port, debug=debug)
+
