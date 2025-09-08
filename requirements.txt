@@ -1,0 +1,12 @@
+Flask==3.0.3
+Flask-Talisman==1.1.0
+Flask-Limiter==3.8.0
+python-dotenv==1.0.1
+gunicorn==22.0.0
+redis==5.0.8
+requests==2.32.3
+
+# 호환성 안정화를 위해(간헐적 빌드 환경 차이 예방, 선택)
+Werkzeug==3.0.3
+Jinja2==3.1.4
+itsdangerous==2.2.0

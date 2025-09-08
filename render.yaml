@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: did-flask-render
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app -w 2 -k gthread --threads 8 --timeout 120 --keep-alive 75 -b 0.0.0.0:$PORT
+    autoDeploy: true
+    healthCheckPath: /healthz
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+      # D-ID 임베드 모드에 필요한 값
+      - key: DID_AGENT_ID
+        sync: false
+      - key: DID_CLIENT_KEY
+        sync: false
+
+      # ── 토큰모드 쓸 때만 해제 ───────────────────────────────
+      # - key: DID_TOKEN_URL
+      #   value: https://api.d-id.com/v2/sessions
+      # - key: DID_API_KEY            # "username:password" 형식
+      #   sync: false
+      # ─────────────────────────────────────────────────────
+
+      # Gunicorn 추가 플래그(선택)
+      - key: GUNICORN_CMD_ARGS
+        value: "--graceful-timeout 30 --log-level info"
+
+      # Flask-Limiter 저장소(옵션): 무료 Redis 연동
+      - key: REDIS_URL
+        fromService:
+          name: did-redis
+          type: redis
+
+  - type: redis
+    name: did-redis
+    plan: free
+    ipAllowList: []   # anywhere

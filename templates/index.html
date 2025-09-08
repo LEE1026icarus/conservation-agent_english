@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>D-ID Agent (Flask + Render)</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <!-- 상태칩 -->
+  <div class="status-chip" id="chip">● 권한 대기</div>
+
+  <!-- D-ID 타깃 컨테이너 -->
+  <div id="did-container"></div>
+
+  <!-- 툴바 (Start만 남김) -->
+  <div class="toolbar">
+    <button id="btn-start" class="primary" type="button">Start (English)</button>
+  </div>
+
+  <p class="note">
+    Mode: <strong id="mode-label"></strong> — 첫 클릭 후 음성 출력/마이크 권한이 활성화됩니다.
+  </p>
+
+  <!-- 프리-퍼미션 모달 -->
+  <div id="premodal" class="modal open" role="dialog" aria-modal="true" aria-labelledby="premodal-title">
+    <div class="modal-card">
+      <h3 id="premodal-title">원활한 대화를 위해 마이크·스피커 사용이 필요해요</h3>
+      <p>대화 음성을 듣고 답변을 말하기 위해 마이크와 스피커 권한을 요청합니다. 개인 음성 데이터는 세션 내 처리 후 저장하지 않습니다.</p>
+      <label class="inline">
+        <input id="agree" type="checkbox"/>
+        안내를 확인했고, 마이크 권한 요청에 동의합니다.
+      </label>
+      <div class="modal-actions">
+        <button id="btn-test" class="primary" disabled>테스트 시작</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 테스트 스텝 -->
+  <div id="teststep" class="card hidden">
+    <h4>장치 테스트</h4>
+
+    <div class="grid">
+      <div>
+        <h5>스피커 테스트</h5>
+        <p>짧은 음이 재생됩니다. 들리지 않으면 출력 장치를 확인하세요.</p>
+        <button id="btn-speaker" type="button">스피커 테스트</button>
+      </div>
+
+      <div>
+        <h5>마이크 테스트</h5>
+        <p>아래 바가 말소리에 반응하면 정상입니다.</p>
+        <canvas id="vu" width="300" height="24" class="vu"></canvas>
+        <button id="btn-mic-test" type="button">마이크 테스트</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <h5>마이크 선택</h5>
+        <select id="micSelect"></select>
+      </div>
+      <div>
+        <h5>스피커 선택</h5>
+        <select id="spkSelect"></select>
+        <small>일부 브라우저에서 스피커 선택이 제한될 수 있어요.</small>
+      </div>
+    </div>
+
+    <div class="right">
+      <button id="btn-permit" class="primary" type="button">권한 요청하고 시작하기</button>
+    </div>
+  </div>
+
+  <!-- 재시도 배너 -->
+  <div id="banner" class="banner hidden"></div>
+
+  <!-- [데모모드] data-client-key 로딩 -->
+  <script>
+    window.__DID_USE_TOKEN_MODE__ = false;             // 임베드 모드
+    window.__DID_AGENT_ID__ = "{{ did_agent_id }}";
+    window.__DID_CLIENT_KEY__ = "{{ did_client_key }}";
+  </script>
+  <script
+    type="module"
+    src="https://agent.d-id.com/v2/index.js"
+    data-mode="full"
+    data-client-key="{{ did_client_key }}"
+    data-agent-id="{{ did_agent_id }}"
+    data-name="did-agent"
+    data-monitor="false"
+    data-target-id="did-container">
+  </script>
+
+  <script src="/static/app.js"></script>
+
+  <!-- 오디오 자동재생 언락용 -->
+  <audio id="unlock" src="/static/test-tone.mp3" preload="auto" muted playsinline></audio>
+</body>
+</html>
