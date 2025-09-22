@@ -90,6 +90,13 @@ DID_AGENT_ID   = (os.getenv("DID_AGENT_ID") or "").strip()    # 대시보드의 
 
 @app.route("/")
 @limiter.limit("200 per minute")   # 루트 엔드포인트 제한 완화
+def index():
+    # 템플릿에서 data-* 속성으로 꽂아 넣을 값들
+    return render_template(
+        "index.html",
+        did_client_key=DID_CLIENT_KEY,
+        did_agent_id=DID_AGENT_ID
+    )
 
 @app.route("/healthz")
 def healthz():
@@ -100,5 +107,6 @@ if __name__ == "__main__":
     debug = os.environ.get("FLASK_DEBUG", "0") == "1"  # 프로덕션에서 debug 꺼두기
     print(f"Starting server on port {port} (debug={debug})")
     app.run(host="0.0.0.0", port=port, debug=debug)
+
 
 
