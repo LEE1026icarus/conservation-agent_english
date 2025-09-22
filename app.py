@@ -75,8 +75,12 @@ talisman = Talisman(app, content_security_policy=csp, force_https=False)
 # 레이트 리밋 (선택)
 # ─────────────────────────────────────────────────────────
 storage_uri = os.getenv("REDIS_URL", "memory://")
-limiter = Limiter(get_remote_address, app=app, storage_uri=storage_uri,
-                  default_limits=["100 per 10 minutes"])
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    storage_uri=storage_uri,
+    default_limits=["2000 per 10 minutes"]  # 전역 기본 제한 완화
+)
 
 # ─────────────────────────────────────────────────────────
 # 환경변수 (임베드 전용: 서버 비밀키 불필요)
@@ -85,14 +89,7 @@ DID_CLIENT_KEY = (os.getenv("DID_CLIENT_KEY") or "").strip()  # 공개 가능(�
 DID_AGENT_ID   = (os.getenv("DID_AGENT_ID") or "").strip()    # 대시보드의 Agent ID
 
 @app.route("/")
-@limiter.limit("30 per minute")
-def index():
-    # 템플릿에서 data-* 속성으로 꽂아 넣을 값들
-    return render_template(
-        "index.html",
-        did_client_key=DID_CLIENT_KEY,
-        did_agent_id=DID_AGENT_ID
-    )
+@limiter.limit("200 per minute")   # 루트 엔드포인트 제한 완화
 
 @app.route("/healthz")
 def healthz():
@@ -103,4 +100,5 @@ if __name__ == "__main__":
     debug = os.environ.get("FLASK_DEBUG", "0") == "1"  # 프로덕션에서 debug 꺼두기
     print(f"Starting server on port {port} (debug={debug})")
     app.run(host="0.0.0.0", port=port, debug=debug)
+
 
